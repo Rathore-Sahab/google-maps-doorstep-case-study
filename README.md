@@ -4,7 +4,7 @@
 
 ## TL;DR
 
-In India, the hardest part of a delivery is often the last 100 metres, not the road. Addresses are written as landmarks ("behind Hanuman temple, 2nd gate"), so riders phone customers, circle blocks and sometimes give up.
+In India, the hardest part of a delivery is often the last 100 metres, not the road. Addresses are written as landmarks ("behind Hanuman temple, 2nd gate"), so riders phone customers, circle blocks and sometimes give up. I tested this by interviewing **25 delivery riders** in Pune and Chhatrapati Sambhajinagar.
 
 **Proposal: Google Maps Doorstep.** It has two sides:
 
@@ -42,12 +42,13 @@ The delivery rider is the primary user. The customer creates the data, and the p
 | **Customer** (data creator) | Lives in a gated society with 6 towers and 2 gates | "Let my parcel find me without three phone calls." | Retyping landmarks in every app; calls during meetings; missed deliveries |
 | **Platform / hub lead** (buyer) | Ops team at a food, quick-commerce or parcel company. My Flipkart role sat here. | "Cut failed attempts and 'where is my order' escalations." | RTO costs, reattempts, low ratings, orphan shipments |
 
-**Insights to validate in rider interviews:**
+**What 25 riders told me.** I interviewed 25 delivery riders working for Zomato, Swiggy, Blinkit and Flipkart: 10 in Pune and 15 in Chhatrapati Sambhajinagar. Most complete around 15 deliveries a day.
 
-1. Riders trust their own memory and the customer's voice more than the map pin once they are near the building.
-2. Most time is lost *after* arriving in the area, not on the road.
-3. A photo of the entrance is worth more than a written landmark.
-4. Riders can't safely look at a screen while moving, so arrival guidance must be glanceable or voice-first.
+1. **Wrong pins and unclear addresses are the top cause of delay.** The GPS pin the customer entered is often wrong, and the written address doesn't resolve it.
+2. **Gated-society security costs 5–10 minutes.** Most riders lose that much at security checks on a gated-society delivery: gate entry, calls to the resident, waiting for approval.
+3. **The map's view of the route is out of date.** In one rider's words: *"Map often shows a blocked way as clear, and it reroutes when I get there."*
+
+**What changed in the solution:** the interviews confirmed Doorstep Pin and Arrival Mode. They also added two features: gate pre-clearance and blocked-path reports (see Solution).
 
 ## Why Google Maps should win this
 
@@ -68,6 +69,11 @@ Doorstep turns the last 100 m from a phone call into a map feature. It has four 
 2. **Share once, use everywhere (platform API).** The customer gets a short Doorstep link or Plus Code. They paste it into any delivery app, or, with consent, apps fetch it through Maps Platform. The address text stays as it is; the pin becomes the source of truth.
 3. **Arrival Mode (rider).** Within ~200 m of the drop, navigation switches to a building-level view. It shows the right gate, the entrance photo and the parking spot, with a voice cue ("Use Gate 2, Tower C on your left"). One tap calls the customer only if needed.
 4. **Learned Doorsteps (the flywheel).** When partner apps report where successful handovers happened (aggregated and anonymised), Maps improves the pin for that building, even for customers who never set one.
+
+**Added after rider interviews**
+
+5. **Gate pre-clearance.** When the order is out for delivery, the customer's Doorstep Pin can send a one-time rider pass to the society's visitor-management app, so security already expects the rider. This targets the 5–10 minutes most riders lose at the gate. *(Needs partners; validate with 2–3 housing societies.)*
+6. **Blocked-path reports.** One tap in Arrival Mode lets a rider mark a lane or gate as blocked, and Maps stops routing two-wheelers that way. This fixes riders being rerouted only after they reach a blocked route.
 
 **Design principles:** voice-first for riders (safety) · customer-controlled and deletable (privacy) · works on low-end Android and patchy 4G · regional language support from day one.
 
@@ -144,7 +150,7 @@ Every number above is a hypothesis. This is how I'd test each one cheaply before
 
 | Assumption | Cheapest test | Signal that it's true |
 | --- | --- | --- |
-| Most rider time is lost after reaching the area | Interview 5–10 Pune riders; shadow 2 shifts and time each drop | Over a third of drop time is spent after arriving in the area |
+| Most rider time is lost after reaching the area | Interview 5–10 Pune riders; shadow 2 shifts and time each drop | Over a third of drop time is spent after arriving in the area. Partly confirmed: most of the 25 riders interviewed lose 5–10 min at gated-society security |
 | Customers will set a pin once | Fake-door test: a "Save your exact doorstep" card in a Google Form shared with 100 people | Over 30% complete it |
 | An entrance photo beats a text landmark | Show riders the same address both ways; time them to the gate | Clear time saving with the photo |
 | Partners value fewer failed attempts | Ask 2–3 hub or ops leads what a failed attempt costs | They can name a cost per reattempt and would trial it |
